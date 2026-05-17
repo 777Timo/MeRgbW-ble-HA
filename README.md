@@ -5,6 +5,8 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Vibe Coded](https://img.shields.io/badge/vibe%20coded-with%20Claude-blueviolet)](https://claude.ai)
 
+> **Unofficial integration — not affiliated with or endorsed by MeRGBW / Shenzhen Minjie Technology.**
+
 > **[English](#english) | [Deutsch](#deutsch)**
 
 ---
