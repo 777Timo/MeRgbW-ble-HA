@@ -28,8 +28,8 @@ async def async_setup_entry(
 ) -> None:
     address = entry.data["address"]
     async_add_entities([
-        HexagonSpeedNumber(hass, address, entry.entry_id),
-        HexagonSensitivityNumber(hass, address, entry.entry_id),
+        HexagonSpeedNumber(hass, address, entry.title, entry.entry_id),
+        HexagonSensitivityNumber(hass, address, entry.title, entry.entry_id),
     ])
 
 
@@ -41,11 +41,11 @@ class HexagonBLENumberBase(NumberEntity):
     _attr_native_step = 1.0
     _attr_native_unit_of_measurement = "%"
 
-    def __init__(self, hass: HomeAssistant, address: str, entry_id: str) -> None:
+    def __init__(self, hass: HomeAssistant, address: str, name: str, entry_id: str) -> None:
         self.hass = hass
         self._address = address
         self._lock = asyncio.Lock()
-        self._attr_device_info = {"identifiers": {(DOMAIN, address)}}
+        self._attr_device_info = {"identifiers": {(DOMAIN, address)}, "name": name}
 
     async def async_set_native_value(self, value: float) -> None:
         self._attr_native_value = value
@@ -91,8 +91,8 @@ class HexagonSpeedNumber(HexagonBLENumberBase):
     _attr_icon = "mdi:speedometer"
     _attr_native_value = 50.0
 
-    def __init__(self, hass: HomeAssistant, address: str, entry_id: str) -> None:
-        super().__init__(hass, address, entry_id)
+    def __init__(self, hass: HomeAssistant, address: str, name: str, entry_id: str) -> None:
+        super().__init__(hass, address, name, entry_id)
         self._attr_unique_id = f"hexagon_ble_speed_{address.replace(':', '_')}"
 
     def _build_command(self, value: int) -> bytes:
@@ -104,8 +104,8 @@ class HexagonSensitivityNumber(HexagonBLENumberBase):
     _attr_icon = "mdi:microphone"
     _attr_native_value = 50.0
 
-    def __init__(self, hass: HomeAssistant, address: str, entry_id: str) -> None:
-        super().__init__(hass, address, entry_id)
+    def __init__(self, hass: HomeAssistant, address: str, name: str, entry_id: str) -> None:
+        super().__init__(hass, address, name, entry_id)
         self._attr_unique_id = f"hexagon_ble_sensitivity_{address.replace(':', '_')}"
 
     def _build_command(self, value: int) -> bytes:

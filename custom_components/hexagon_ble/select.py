@@ -31,7 +31,7 @@ async def async_setup_entry(
     async_add_entities: AddEntitiesCallback,
 ) -> None:
     address = entry.data["address"]
-    async_add_entities([HexagonEffectSelect(hass, address, entry.entry_id)])
+    async_add_entities([HexagonEffectSelect(hass, address, entry.title, entry.entry_id)])
 
 
 class HexagonEffectSelect(SelectEntity):
@@ -39,12 +39,12 @@ class HexagonEffectSelect(SelectEntity):
     _attr_name = "Effekt"
     _attr_icon = "mdi:palette"
 
-    def __init__(self, hass: HomeAssistant, address: str, entry_id: str) -> None:
+    def __init__(self, hass: HomeAssistant, address: str, name: str, entry_id: str) -> None:
         self.hass = hass
         self._address = address
         self._lock = asyncio.Lock()
         self._attr_unique_id = f"hexagon_ble_effect_{address.replace(':', '_')}"
-        self._attr_device_info = {"identifiers": {(DOMAIN, address)}}
+        self._attr_device_info = {"identifiers": {(DOMAIN, address)}, "name": name}
         self._attr_options = [NO_EFFECT] + EFFECT_LIST
         self._attr_current_option = NO_EFFECT
 

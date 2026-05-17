@@ -27,7 +27,7 @@ async def async_setup_entry(
     async_add_entities: AddEntitiesCallback,
 ) -> None:
     address = entry.data["address"]
-    async_add_entities([HexagonBLEDebugText(hass, address, entry.entry_id)])
+    async_add_entities([HexagonBLEDebugText(hass, address, entry.title, entry.entry_id)])
 
 
 class HexagonBLEDebugText(TextEntity):
@@ -40,11 +40,11 @@ class HexagonBLEDebugText(TextEntity):
     _attr_icon = "mdi:console"
     _attr_native_value = ""
 
-    def __init__(self, hass: HomeAssistant, address: str, entry_id: str) -> None:
+    def __init__(self, hass: HomeAssistant, address: str, name: str, entry_id: str) -> None:
         self.hass = hass
         self._address = address
         self._attr_unique_id = f"hexagon_ble_debug_{address.replace(':', '_')}"
-        self._attr_device_info = {"identifiers": {(DOMAIN, address)}}
+        self._attr_device_info = {"identifiers": {(DOMAIN, address)}, "name": name}
         self._lock = asyncio.Lock()
 
     async def async_set_value(self, value: str) -> None:
