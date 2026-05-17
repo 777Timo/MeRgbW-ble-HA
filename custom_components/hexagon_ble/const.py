@@ -103,8 +103,8 @@ def cmd_scene(index: int) -> bytes:
 
 
 def cmd_scene_speed(speed_pct: int) -> bytes:
-    """Set scene animation speed (0–100%). Type 0x0F, 6-byte format (verified)."""
-    speed = max(0, min(100, speed_pct))
+    """Set scene animation speed (0–100%). Device uses delay internally: 0=fastest, 100=slowest."""
+    speed = max(0, min(100, 100 - speed_pct))
     payload = bytes([0x55, 0x0F, 0xFF, 0x06, speed])
     return payload + bytes([_checksum(payload)])
 
