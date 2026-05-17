@@ -25,14 +25,14 @@ class HexagonBLEConfigFlow(ConfigFlow, domain=DOMAIN):
 
         self._discovery_info = discovery_info
         self._address = discovery_info.address
-        self.context["title_placeholders"] = {"name": discovery_info.name or "Hexagon Lights"}
+        self.context["title_placeholders"] = {"name": discovery_info.name or "MeRgbW BLE"}
         return await self.async_step_confirm()
 
     async def async_step_confirm(self, user_input=None) -> FlowResult:
         """Confirm discovered device."""
         if user_input is not None:
             return self.async_create_entry(
-                title=self._discovery_info.name or "Hexagon Lights",
+                title=self._discovery_info.name or "MeRgbW BLE",
                 data={"address": self._address},
             )
 
@@ -53,7 +53,7 @@ class HexagonBLEConfigFlow(ConfigFlow, domain=DOMAIN):
             await self.async_set_unique_id(address)
             self._abort_if_unique_id_configured()
             return self.async_create_entry(
-                title=user_input.get("name", "Hexagon Lights"),
+                title=user_input.get("name", "MeRgbW BLE"),
                 data={"address": address},
             )
 
@@ -62,7 +62,7 @@ class HexagonBLEConfigFlow(ConfigFlow, domain=DOMAIN):
             data_schema=vol.Schema(
                 {
                     vol.Required("address"): str,
-                    vol.Optional("name", default="Hexagon Lights"): str,
+                    vol.Optional("name", default="MeRgbW BLE"): str,
                 }
             ),
             errors=errors,

@@ -1,6 +1,6 @@
 {
   "domain": "hexagon_ble",
-  "name": "Hexagon BLE Lights",
+  "name": "MeRgbW BLE",
   "version": "1.0.0",
   "config_flow": true,
   "bluetooth": [
