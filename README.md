@@ -3,6 +3,7 @@
 [![hacs_badge](https://img.shields.io/badge/HACS-Custom-orange.svg)](https://github.com/hacs/integration)
 [![HA Version](https://img.shields.io/badge/Home%20Assistant-2024.1%2B-blue)](https://www.home-assistant.io/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![Vibe Coded](https://img.shields.io/badge/vibe%20coded-with%20Claude-blueviolet)](https://claude.ai)
 
 > **[English](#english) | [Deutsch](#deutsch)**
 
@@ -127,6 +128,12 @@ Supports **automatic Bluetooth discovery** and provides full control over color,
 ### Contributing
 
 Pull requests and issues are welcome. Please open an issue before submitting large changes.
+
+---
+
+### Vibe Coded
+
+This integration was fully vibe coded with [Claude](https://claude.ai) — BLE protocol reverse-engineered, integration written, and bugs squashed entirely through AI-assisted development.
 
 ---
 
@@ -255,6 +262,12 @@ Unterstützt **automatische Bluetooth-Erkennung** und bietet vollständige Kontr
 ### Mitarbeit
 
 Pull Requests und Issues sind willkommen. Bitte ein Issue erstellen, bevor umfangreiche Änderungen eingereicht werden.
+
+---
+
+### Vibe Coded
+
+Diese Integration wurde vollständig mit [Claude](https://claude.ai) vibe gecodet — BLE-Protokoll per Reverse Engineering ermittelt, Integration geschrieben und Bugs behoben, alles durch KI-gestützte Entwicklung.
 
 ---
 
