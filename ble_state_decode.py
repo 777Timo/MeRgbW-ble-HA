@@ -2,7 +2,7 @@
 """Decodiert die State-Antwort (Type 0x00) unter verschiedenen Lampenzuständen."""
 import asyncio
 
-ADDRESS = "41:42:05:1B:16:8B"
+ADDRESS = "XX:XX:XX:XX:XX:XX"  # replace with your device MAC
 WRITE_UUID = "0000fff3-0000-1000-8000-00805f9b34fb"
 NOTIFY_UUID = "0000fff4-0000-1000-8000-00805f9b34fb"
 
