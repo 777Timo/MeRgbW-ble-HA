@@ -1,7 +1,7 @@
 {
   "domain": "hexagon_ble",
   "name": "MeRgbW BLE",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "config_flow": true,
   "bluetooth": [
     {"service_uuid": "00003519-0000-1000-8000-00805f9b34fb"}

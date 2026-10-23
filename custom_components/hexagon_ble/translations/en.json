@@ -1,0 +1,37 @@
+{
+  "config": {
+    "flow_title": "{name}",
+    "step": {
+      "confirm": {
+        "title": "Set up {name}?",
+        "description": "Device: {name} ({address})\n\nThe light accepts only one Bluetooth connection at a time. Close the MeRGBW app (or turn off Bluetooth on your phone) before continuing."
+      },
+      "user": {
+        "title": "Add MeRgbW light manually",
+        "description": "Enter the Bluetooth MAC address of the light.\n\nThe light accepts only one Bluetooth connection at a time. If it is connected to the MeRGBW app, Home Assistant cannot find or control it – close the app first.",
+        "data": {
+          "address": "MAC address",
+          "name": "Name"
+        }
+      }
+    },
+    "abort": {
+      "already_configured": "This device is already configured."
+    }
+  },
+  "entity": {
+    "select": {
+      "effect": {
+        "name": "Effect"
+      }
+    },
+    "number": {
+      "animation_speed": {
+        "name": "Animation speed"
+      },
+      "music_sensitivity": {
+        "name": "Music sensitivity"
+      }
+    }
+  }
+}

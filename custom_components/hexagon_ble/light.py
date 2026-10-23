@@ -26,15 +26,15 @@ from .const import (
     CMD_OFF,
     CMD_ON,
     DOMAIN,
-    EFFECT_LIST,
-    MUSIC_INDEX,
+    EFFECT_LOOKUP,
     NOTIFY_CHAR_UUID,
-    SCENE_INDEX,
     WRITE_CHAR_UUID,
     cmd_brightness,
     cmd_color,
-    cmd_music_mode,
-    cmd_scene,
+    cmd_effect,
+    effect_list,
+    effect_name,
+    resolve_language,
 )
 
 _LOGGER = logging.getLogger(__name__)
@@ -55,13 +55,14 @@ class HexagonBLELight(LightEntity):
     _attr_color_mode = ColorMode.RGB
     _attr_supported_color_modes = {ColorMode.RGB}
     _attr_supported_features = LightEntityFeature.EFFECT
-    _attr_effect_list = EFFECT_LIST
     _attr_has_entity_name = True
     _attr_name = None
 
     def __init__(self, hass: HomeAssistant, address: str, name: str, entry_id: str) -> None:
         self.hass = hass
         self._address = address
+        self._language = resolve_language(hass.config.language)
+        self._attr_effect_list = effect_list(self._language)
         self._attr_unique_id = f"hexagon_ble_{address.replace(':', '_')}"
         self._attr_device_info = {
             "identifiers": {(DOMAIN, address)},
@@ -99,12 +100,12 @@ class HexagonBLELight(LightEntity):
 
         if ATTR_EFFECT in kwargs:
             effect = kwargs[ATTR_EFFECT]
-            if effect in SCENE_INDEX:
-                self._effect = effect
-                commands.append(cmd_scene(SCENE_INDEX[effect]))
-            elif effect in MUSIC_INDEX:
-                self._effect = effect
-                commands.append(cmd_music_mode(MUSIC_INDEX[effect]))
+            if effect in EFFECT_LOOKUP:
+                kind, index = EFFECT_LOOKUP[effect]
+                self._effect = effect_name(self._language, kind, index)
+                commands.append(cmd_effect(kind, index))
+            else:
+                _LOGGER.warning("Hexagon (%s): unknown effect %r", self._address, effect)
         else:
             if ATTR_RGB_COLOR in kwargs:
                 self._rgb = kwargs[ATTR_RGB_COLOR]
@@ -136,7 +137,7 @@ class HexagonBLELight(LightEntity):
             )
             if ble_device is None:
                 _LOGGER.warning(
-                    "Hexagon (%s) nicht erreichbar – Gerät nicht in Reichweite?",
+                    "Hexagon (%s) not reachable – out of range or connected to the MeRGBW app?",
                     self._address,
                 )
                 return
@@ -147,21 +148,21 @@ class HexagonBLELight(LightEntity):
                 )
                 try:
                     def _notify_handler(sender, data):
-                        _LOGGER.debug("Notify von %s: %s", sender, data.hex())
+                        _LOGGER.debug("Notify from %s: %s", sender, data.hex())
                     try:
                         await client.start_notify(NOTIFY_CHAR_UUID, _notify_handler)
                     except BleakError:
                         pass
                     await asyncio.sleep(0.1)
                     for cmd in commands:
-                        _LOGGER.warning("Hexagon: Sende %s", cmd.hex())
+                        _LOGGER.debug("Hexagon: sending %s", cmd.hex())
                         await client.write_gatt_char(WRITE_CHAR_UUID, cmd, response=False)
                         await asyncio.sleep(0.05)
                 finally:
                     await client.disconnect()
             except BleakError as err:
-                _LOGGER.warning("BLE-Fehler für %s: %s", self._address, err)
+                _LOGGER.warning("BLE error for %s: %s", self._address, err)
             except asyncio.TimeoutError:
-                _LOGGER.warning("BLE-Timeout für %s", self._address)
+                _LOGGER.warning("BLE timeout for %s", self._address)
             except Exception as err:
-                _LOGGER.warning("Unerwarteter Fehler für %s: %s", self._address, err)
+                _LOGGER.warning("Unexpected error for %s: %s", self._address, err)

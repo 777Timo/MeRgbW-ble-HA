@@ -1,4 +1,4 @@
-"""Hexagon BLE – Select-Entity für Effekt-Auswahl."""
+"""Hexagon BLE – select entity for effect selection."""
 from __future__ import annotations
 
 import asyncio
@@ -16,13 +16,12 @@ from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
 from .const import (
     DOMAIN, WRITE_CHAR_UUID, NOTIFY_CHAR_UUID,
-    EFFECT_LIST, SCENE_INDEX, MUSIC_INDEX,
-    cmd_scene, cmd_music_mode,
+    EFFECT_LOOKUP, NO_EFFECT,
+    cmd_effect, effect_list, resolve_language,
 )
 
 _LOGGER = logging.getLogger(__name__)
 CONNECT_TIMEOUT = 15.0
-NO_EFFECT = "Kein Effekt (Farbe)"
 
 
 async def async_setup_entry(
@@ -36,7 +35,7 @@ async def async_setup_entry(
 
 class HexagonEffectSelect(SelectEntity):
     _attr_has_entity_name = True
-    _attr_name = "Effekt"
+    _attr_translation_key = "effect"
     _attr_icon = "mdi:palette"
 
     def __init__(self, hass: HomeAssistant, address: str, name: str, entry_id: str) -> None:
@@ -45,24 +44,18 @@ class HexagonEffectSelect(SelectEntity):
         self._lock = asyncio.Lock()
         self._attr_unique_id = f"hexagon_ble_effect_{address.replace(':', '_')}"
         self._attr_device_info = {"identifiers": {(DOMAIN, address)}, "name": name}
-        self._attr_options = [NO_EFFECT] + EFFECT_LIST
-        self._attr_current_option = NO_EFFECT
+        language = resolve_language(hass.config.language)
+        self._attr_options = [NO_EFFECT[language]] + effect_list(language)
+        self._attr_current_option = NO_EFFECT[language]
 
     async def async_select_option(self, option: str) -> None:
         self._attr_current_option = option
         self.async_write_ha_state()
 
-        if option == NO_EFFECT:
+        if option not in EFFECT_LOOKUP:
             return
 
-        if option in SCENE_INDEX:
-            cmd = cmd_scene(SCENE_INDEX[option])
-        elif option in MUSIC_INDEX:
-            cmd = cmd_music_mode(MUSIC_INDEX[option])
-        else:
-            return
-
-        await self._send(cmd)
+        await self._send(cmd_effect(*EFFECT_LOOKUP[option]))
 
     async def _send(self, cmd: bytes) -> None:
         async with self._lock:
@@ -72,7 +65,7 @@ class HexagonEffectSelect(SelectEntity):
                 self.hass, self._address, connectable=False
             )
             if ble_device is None:
-                _LOGGER.warning("Hexagon (%s) nicht erreichbar", self._address)
+                _LOGGER.warning("Hexagon (%s) not reachable – out of range or connected to the MeRGBW app?", self._address)
                 return
             try:
                 client = await establish_connection(
@@ -84,13 +77,13 @@ class HexagonEffectSelect(SelectEntity):
                     except BleakError:
                         pass
                     await asyncio.sleep(0.1)
-                    _LOGGER.warning("Hexagon Effekt: Sende %s", cmd.hex())
+                    _LOGGER.debug("Hexagon effect: sending %s", cmd.hex())
                     await client.write_gatt_char(WRITE_CHAR_UUID, cmd, response=False)
                 finally:
                     await client.disconnect()
             except BleakError as err:
-                _LOGGER.warning("BLE-Fehler für %s: %s", self._address, err)
+                _LOGGER.warning("BLE error for %s: %s", self._address, err)
             except asyncio.TimeoutError:
-                _LOGGER.warning("BLE-Timeout für %s", self._address)
+                _LOGGER.warning("BLE timeout for %s", self._address)
             except Exception as err:
-                _LOGGER.warning("Unerwarteter Fehler für %s: %s", self._address, err)
+                _LOGGER.warning("Unexpected error for %s: %s", self._address, err)
