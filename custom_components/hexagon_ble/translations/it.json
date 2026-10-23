@@ -1,0 +1,37 @@
+{
+  "config": {
+    "flow_title": "{name}",
+    "step": {
+      "confirm": {
+        "title": "Configurare {name}?",
+        "description": "Dispositivo: {name} ({address})\n\nLa lampada accetta una sola connessione Bluetooth alla volta. Chiudi l'app MeRGBW (o disattiva il Bluetooth del telefono) prima di continuare."
+      },
+      "user": {
+        "title": "Aggiungi lampada MeRgbW manualmente",
+        "description": "Inserisci l'indirizzo MAC Bluetooth della lampada.\n\nLa lampada accetta una sola connessione Bluetooth alla volta. Se è connessa all'app MeRGBW, Home Assistant non può trovarla né controllarla: chiudi prima l'app.",
+        "data": {
+          "address": "Indirizzo MAC",
+          "name": "Nome"
+        }
+      }
+    },
+    "abort": {
+      "already_configured": "Questo dispositivo è già configurato."
+    }
+  },
+  "entity": {
+    "select": {
+      "effect": {
+        "name": "Effetto"
+      }
+    },
+    "number": {
+      "animation_speed": {
+        "name": "Velocità animazione"
+      },
+      "music_sensitivity": {
+        "name": "Sensibilità musicale"
+      }
+    }
+  }
+}

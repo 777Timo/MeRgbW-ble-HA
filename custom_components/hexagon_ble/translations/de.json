@@ -1,0 +1,37 @@
+{
+  "config": {
+    "flow_title": "{name}",
+    "step": {
+      "confirm": {
+        "title": "{name} einrichten?",
+        "description": "Gerät: {name} ({address})\n\nDie Leuchte nimmt nur eine Bluetooth-Verbindung gleichzeitig an. Schließe vorher die MeRGBW-App (oder schalte Bluetooth am Handy aus)."
+      },
+      "user": {
+        "title": "MeRgbW-Leuchte manuell hinzufügen",
+        "description": "Gib die Bluetooth-MAC-Adresse der Leuchte ein.\n\nDie Leuchte nimmt nur eine Bluetooth-Verbindung gleichzeitig an. Ist sie mit der MeRGBW-App verbunden, kann Home Assistant sie weder finden noch steuern – schließe zuerst die App.",
+        "data": {
+          "address": "MAC-Adresse",
+          "name": "Name"
+        }
+      }
+    },
+    "abort": {
+      "already_configured": "Dieses Gerät ist bereits eingerichtet."
+    }
+  },
+  "entity": {
+    "select": {
+      "effect": {
+        "name": "Effekt"
+      }
+    },
+    "number": {
+      "animation_speed": {
+        "name": "Animationsgeschwindigkeit"
+      },
+      "music_sensitivity": {
+        "name": "Musikempfindlichkeit"
+      }
+    }
+  }
+}

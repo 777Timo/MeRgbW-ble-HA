@@ -1,4 +1,4 @@
-"""Hexagon BLE – Number-Entities für Geschwindigkeit und Empfindlichkeit."""
+"""Hexagon BLE – number entities for animation speed and music sensitivity."""
 from __future__ import annotations
 
 import asyncio
@@ -63,7 +63,7 @@ class HexagonBLENumberBase(NumberEntity):
                 self.hass, self._address, connectable=False
             )
             if ble_device is None:
-                _LOGGER.warning("Hexagon (%s) nicht erreichbar", self._address)
+                _LOGGER.warning("Hexagon (%s) not reachable – out of range or connected to the MeRGBW app?", self._address)
                 return
             try:
                 client = await establish_connection(
@@ -79,15 +79,15 @@ class HexagonBLENumberBase(NumberEntity):
                 finally:
                     await client.disconnect()
             except BleakError as err:
-                _LOGGER.warning("BLE-Fehler für %s: %s", self._address, err)
+                _LOGGER.warning("BLE error for %s: %s", self._address, err)
             except asyncio.TimeoutError:
-                _LOGGER.warning("BLE-Timeout für %s", self._address)
+                _LOGGER.warning("BLE timeout for %s", self._address)
             except Exception as err:
-                _LOGGER.warning("Unerwarteter Fehler für %s: %s", self._address, err)
+                _LOGGER.warning("Unexpected error for %s: %s", self._address, err)
 
 
 class HexagonSpeedNumber(HexagonBLENumberBase):
-    _attr_name = "Animationsgeschwindigkeit"
+    _attr_translation_key = "animation_speed"
     _attr_icon = "mdi:speedometer"
     _attr_native_value = 50.0
 
@@ -100,7 +100,7 @@ class HexagonSpeedNumber(HexagonBLENumberBase):
 
 
 class HexagonSensitivityNumber(HexagonBLENumberBase):
-    _attr_name = "Musikempfindlichkeit"
+    _attr_translation_key = "music_sensitivity"
     _attr_icon = "mdi:microphone"
     _attr_native_value = 50.0
 

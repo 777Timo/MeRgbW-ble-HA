@@ -1,0 +1,37 @@
+{
+  "config": {
+    "flow_title": "{name}",
+    "step": {
+      "confirm": {
+        "title": "设置 {name}？",
+        "description": "设备：{name}（{address}）\n\n灯同一时间只接受一个蓝牙连接。继续之前请关闭 MeRGBW 应用（或关闭手机蓝牙）。"
+      },
+      "user": {
+        "title": "手动添加 MeRgbW 灯",
+        "description": "请输入灯的蓝牙 MAC 地址。\n\n灯同一时间只接受一个蓝牙连接。如果它已连接到 MeRGBW 应用，Home Assistant 将无法发现或控制它——请先关闭应用。",
+        "data": {
+          "address": "MAC 地址",
+          "name": "名称"
+        }
+      }
+    },
+    "abort": {
+      "already_configured": "此设备已配置。"
+    }
+  },
+  "entity": {
+    "select": {
+      "effect": {
+        "name": "效果"
+      }
+    },
+    "number": {
+      "animation_speed": {
+        "name": "动画速度"
+      },
+      "music_sensitivity": {
+        "name": "音乐灵敏度"
+      }
+    }
+  }
+}

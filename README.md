@@ -28,14 +28,13 @@ Supports **automatic Bluetooth discovery** and provides full control over color,
 
 - Full RGB color control (internally converted to HSV — matches the device's native color space)
 - Brightness control (0–100 %)
-- **115 built-in scenes / animations**
+- **109 built-in scenes / animations**
 - **6 music-reactive modes** (microphone-based)
 - Animation speed control (0–100 %)
 - Microphone sensitivity control (0–100 %)
 - Automatic BLE discovery via Home Assistant Bluetooth integration
 - Manual setup by MAC address as fallback
-- State polling on startup (power state + brightness)
-- Raw BLE debug command input for development
+- **Localized** in English, German, Spanish, French, Italian and Chinese (Simplified) — follows the Home Assistant language
 - 100 % local — no internet connection required
 
 ---
@@ -44,11 +43,12 @@ Supports **automatic Bluetooth discovery** and provides full control over color,
 
 | Entity | Type | Description |
 |--------|------|-------------|
-| `light.<name>` | Light | On/Off, RGB color, brightness, effect selection (115 scenes) |
+| `light.<name>` | Light | On/Off, RGB color, brightness, effect selection (109 scenes + 6 music modes) |
 | `select.<name>_effect` | Select | Choose scene or music mode from a dropdown |
 | `number.<name>_animation_speed` | Number | Animation speed 0–100 % |
 | `number.<name>_music_sensitivity` | Number | Microphone sensitivity 0–100 % |
-| `text.<name>_ble_debug` | Text | Send raw hex BLE commands (for development) |
+
+Home Assistant creates the entity IDs when the device is added, so their suffix can differ with your language (e.g. `number.<name>_animationsgeschwindigkeit` on a German system).
 
 ---
 
@@ -90,7 +90,24 @@ Supports **automatic Bluetooth discovery** and provides full control over color,
 2. Power on your MeRgbW light and bring it within Bluetooth range.
 3. Home Assistant will **automatically discover** the device and show a notification.
 4. Click **Configure** and confirm the device.
-5. Alternatively, go to **Settings → Devices & Services → + Add Integration → Hexagon BLE Lights** and enter the MAC address manually.
+5. Alternatively, go to **Settings → Devices & Services → + Add Integration → MeRgbW BLE** and enter the MAC address manually.
+
+> **Close the MeRGBW app first.** The light accepts only one Bluetooth connection at a time. While it is connected to the app on your phone, Home Assistant can neither discover it nor connect to it — this also applies to manual setup by MAC address. Close the app or turn off Bluetooth on the phone.
+
+---
+
+### Languages
+
+Entity names, the setup dialog and all effect names follow the Home Assistant language (**Settings → System → General**). Supported: English, German, Spanish, French, Italian, Chinese (Simplified); any other language falls back to English. The effect names are taken from the official MeRGBW app.
+
+In automations and scripts you can use the effect name in **any** of these languages — `Rot-Gelb-Wechselgradient` and `Red-yellow alternating gradient` both select scene 11. Existing automations therefore keep working after switching the language.
+
+---
+
+### Limitations
+
+- **No individual color per panel.** The integration sets one color, scene or music mode for the whole light. A per-panel command of the BLE controller is not known yet. If you need per-panel control, the original controller can be replaced with an ESP32 running WLED — see [this guide by @Nisbo](https://github.com/777Timo/MeRgbW-ble-HA/issues/1#issuecomment-5061774110).
+- Color, effect, speed and sensitivity are not reported back by the device; Home Assistant shows the last values it sent.
 
 ---
 
@@ -131,6 +148,15 @@ Supports **automatic Bluetooth discovery** and provides full control over color,
 
 Pull requests and issues are welcome. Please open an issue before submitting large changes.
 
+The effect names are generated from the MeRGBW app: `python3 scripts/generate_effect_names.py <path to LEDProject.app>` writes `custom_components/hexagon_ble/effect_names.py`.
+
+---
+
+### Changelog
+
+- **1.1.0** — Translations (en, de, es, fr, it, zh-Hans) for entities, setup dialog and effect names; effect names in automations work in every language; hint about the MeRGBW app blocking the connection; log messages in English. Thanks to [@AshBringer47](https://github.com/AshBringer47) for the first English translation in their fork.
+- **1.0.0** — Initial release.
+
 ---
 
 ### Vibe Coded
@@ -162,14 +188,13 @@ Unterstützt **automatische Bluetooth-Erkennung** und bietet vollständige Kontr
 
 - Vollständige RGB-Farbsteuerung (intern in HSV umgerechnet — entspricht dem nativen Farbraum des Geräts)
 - Helligkeitssteuerung (0–100 %)
-- **115 eingebaute Szenen / Animationen**
+- **109 eingebaute Szenen / Animationen**
 - **6 musikreaktive Modi** (Mikrofonbasiert)
 - Animationsgeschwindigkeit (0–100 %)
 - Mikrofonempfindlichkeit (0–100 %)
 - Automatische BLE-Erkennung über Home Assistant Bluetooth-Integration
 - Manuelles Setup per MAC-Adresse als Fallback
-- Statusabfrage beim Start (Ein/Aus-Zustand + Helligkeit)
-- Rohe BLE-Debug-Befehle für die Entwicklung
+- **Mehrsprachig**: Deutsch, Englisch, Spanisch, Französisch, Italienisch und Chinesisch (vereinfacht) — richtet sich nach der Sprache von Home Assistant
 - 100 % lokal — keine Internetverbindung erforderlich
 
 ---
@@ -178,11 +203,12 @@ Unterstützt **automatische Bluetooth-Erkennung** und bietet vollständige Kontr
 
 | Entity | Typ | Beschreibung |
 |--------|-----|--------------|
-| `light.<name>` | Licht | Ein/Aus, RGB-Farbe, Helligkeit, Effektauswahl (115 Szenen) |
+| `light.<name>` | Licht | Ein/Aus, RGB-Farbe, Helligkeit, Effektauswahl (109 Szenen + 6 Musikmodi) |
 | `select.<name>_effect` | Auswahl | Szene oder Musikmodus per Dropdown |
 | `number.<name>_animation_speed` | Zahl | Animationsgeschwindigkeit 0–100 % |
 | `number.<name>_music_sensitivity` | Zahl | Mikrofonempfindlichkeit 0–100 % |
-| `text.<name>_ble_debug` | Text | Rohe BLE-Hex-Befehle senden (für Entwicklung) |
+
+Home Assistant legt die Entity-IDs beim Hinzufügen des Geräts an; die Endung kann daher je nach Sprache abweichen (z. B. `number.<name>_animationsgeschwindigkeit` auf einem deutschen System).
 
 ---
 
@@ -224,7 +250,24 @@ Unterstützt **automatische Bluetooth-Erkennung** und bietet vollständige Kontr
 2. MeRgbW-Leuchte einschalten und in Bluetooth-Reichweite bringen.
 3. Home Assistant erkennt das Gerät **automatisch** und zeigt eine Benachrichtigung an.
 4. Auf **Konfigurieren** klicken und das Gerät bestätigen.
-5. Alternativ: **Einstellungen → Geräte & Dienste → + Integration hinzufügen → Hexagon BLE Lights** und MAC-Adresse manuell eingeben.
+5. Alternativ: **Einstellungen → Geräte & Dienste → + Integration hinzufügen → MeRgbW BLE** und MAC-Adresse manuell eingeben.
+
+> **Vorher die MeRGBW-App schließen.** Die Leuchte nimmt nur eine Bluetooth-Verbindung gleichzeitig an. Solange sie mit der App auf dem Handy verbunden ist, kann Home Assistant sie weder finden noch sich verbinden — auch nicht beim manuellen Hinzufügen per MAC-Adresse. App schließen oder Bluetooth am Handy ausschalten.
+
+---
+
+### Sprachen
+
+Entitätsnamen, Einrichtungsdialog und alle Effektnamen richten sich nach der Sprache von Home Assistant (**Einstellungen → System → Allgemein**). Unterstützt: Deutsch, Englisch, Spanisch, Französisch, Italienisch, Chinesisch (vereinfacht); andere Sprachen fallen auf Englisch zurück. Die Effektnamen stammen aus der offiziellen MeRGBW-App.
+
+In Automationen und Skripten funktioniert der Effektname in **jeder** dieser Sprachen — `Rot-Gelb-Wechselgradient` und `Red-yellow alternating gradient` wählen beide Szene 11. Bestehende Automationen laufen deshalb auch nach einem Sprachwechsel weiter.
+
+---
+
+### Einschränkungen
+
+- **Keine eigene Farbe pro Panel.** Die Integration setzt eine Farbe, Szene oder einen Musikmodus für die ganze Leuchte. Ein Befehl für einzelne Panels ist beim BLE-Controller bisher nicht bekannt. Wer jedes Panel einzeln steuern möchte, kann den Original-Controller durch einen ESP32 mit WLED ersetzen — siehe [diese Anleitung von @Nisbo](https://github.com/777Timo/MeRgbW-ble-HA/issues/1#issuecomment-5061774110).
+- Farbe, Effekt, Geschwindigkeit und Empfindlichkeit meldet das Gerät nicht zurück; Home Assistant zeigt die zuletzt gesendeten Werte.
 
 ---
 
@@ -264,6 +307,15 @@ Unterstützt **automatische Bluetooth-Erkennung** und bietet vollständige Kontr
 ### Mitarbeit
 
 Pull Requests und Issues sind willkommen. Bitte ein Issue erstellen, bevor umfangreiche Änderungen eingereicht werden.
+
+Die Effektnamen werden aus der MeRGBW-App erzeugt: `python3 scripts/generate_effect_names.py <Pfad zu LEDProject.app>` schreibt `custom_components/hexagon_ble/effect_names.py`.
+
+---
+
+### Änderungen
+
+- **1.1.0** — Übersetzungen (de, en, es, fr, it, zh-Hans) für Entitäten, Einrichtungsdialog und Effektnamen; Effektnamen funktionieren in Automationen in jeder Sprache; Hinweis, dass die MeRGBW-App die Verbindung blockiert; Log-Meldungen auf Englisch. Danke an [@AshBringer47](https://github.com/AshBringer47) für die erste englische Übersetzung in deren Fork.
+- **1.0.0** — Erste Version.
 
 ---
 
