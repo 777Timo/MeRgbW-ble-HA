@@ -22,6 +22,8 @@ Fully reverse-engineered from the official MeRGBW iOS app — no cloud, no accou
 
 Supports **automatic Bluetooth discovery** and provides full control over color, brightness, animations, and music-reactive modes directly from Home Assistant.
 
+> 💡 **Want a different color on every hexagon?** That is not possible over Bluetooth — but you can replace the controller with an ESP32 running WLED: **[ESP32 + WLED guide](docs/esp32-wled.md)**.
+
 ---
 
 ### Features
@@ -106,7 +108,7 @@ In automations and scripts you can use the effect name in **any** of these langu
 
 ### Limitations
 
-- **No individual color per panel.** The integration sets one color, scene or music mode for the whole light. A per-panel command of the BLE controller is not known yet. If you need per-panel control, the original controller can be replaced with an ESP32 running WLED — see [this guide by @Nisbo](https://github.com/777Timo/MeRgbW-ble-HA/issues/1#issuecomment-5061774110).
+- **No individual color per panel.** The integration sets one color, scene or music mode for the whole light. A per-panel command of the BLE controller is not known yet. If you need per-panel control, the original controller can be replaced with an ESP32 running WLED — see the **[ESP32 + WLED guide](docs/esp32-wled.md)** (by @Nisbo).
 - Color, effect, speed and sensitivity are not reported back by the device; Home Assistant shows the last values it sent.
 
 ---
@@ -154,6 +156,7 @@ The effect names are generated from the MeRGBW app: `python3 scripts/generate_ef
 
 ### Changelog
 
+- **Unreleased** — ESP32 + WLED guide for per-panel colors (`docs/esp32-wled.md`), thanks to @Nisbo.
 - **1.1.0** — Translations (en, de, es, fr, it, zh-Hans) for entities, setup dialog and effect names; effect names in automations work in every language; hint about the MeRGBW app blocking the connection; log messages in English. Thanks to [@AshBringer47](https://github.com/AshBringer47) for the first English translation in their fork.
 - **1.0.0** — Initial release.
 
@@ -181,6 +184,8 @@ Custom Home Assistant Integration zur Steuerung von **MeRgbW Hexagon LED-Panels*
 Vollständig per Reverse Engineering aus der offiziellen MeRGBW iOS-App entwickelt — kein Cloud-Account erforderlich.
 
 Unterstützt **automatische Bluetooth-Erkennung** und bietet vollständige Kontrolle über Farbe, Helligkeit, Animationen und musik-reaktive Modi direkt aus Home Assistant heraus.
+
+> 💡 **Jedes Hexagon in einer eigenen Farbe?** Über Bluetooth geht das nicht – aber der Controller lässt sich durch einen ESP32 mit WLED ersetzen: **[Anleitung ESP32 + WLED](docs/esp32-wled.de.md)**.
 
 ---
 
@@ -266,7 +271,7 @@ In Automationen und Skripten funktioniert der Effektname in **jeder** dieser Spr
 
 ### Einschränkungen
 
-- **Keine eigene Farbe pro Panel.** Die Integration setzt eine Farbe, Szene oder einen Musikmodus für die ganze Leuchte. Ein Befehl für einzelne Panels ist beim BLE-Controller bisher nicht bekannt. Wer jedes Panel einzeln steuern möchte, kann den Original-Controller durch einen ESP32 mit WLED ersetzen — siehe [diese Anleitung von @Nisbo](https://github.com/777Timo/MeRgbW-ble-HA/issues/1#issuecomment-5061774110).
+- **Keine eigene Farbe pro Panel.** Die Integration setzt eine Farbe, Szene oder einen Musikmodus für die ganze Leuchte. Ein Befehl für einzelne Panels ist beim BLE-Controller bisher nicht bekannt. Wer jedes Panel einzeln steuern möchte, kann den Original-Controller durch einen ESP32 mit WLED ersetzen — siehe die **[Anleitung ESP32 + WLED](docs/esp32-wled.de.md)** (von @Nisbo).
 - Farbe, Effekt, Geschwindigkeit und Empfindlichkeit meldet das Gerät nicht zurück; Home Assistant zeigt die zuletzt gesendeten Werte.
 
 ---
@@ -314,6 +319,7 @@ Die Effektnamen werden aus der MeRGBW-App erzeugt: `python3 scripts/generate_eff
 
 ### Änderungen
 
+- **Unveröffentlicht** — Anleitung ESP32 + WLED für Farben pro Panel (`docs/esp32-wled.de.md`), danke an @Nisbo.
 - **1.1.0** — Übersetzungen (de, en, es, fr, it, zh-Hans) für Entitäten, Einrichtungsdialog und Effektnamen; Effektnamen funktionieren in Automationen in jeder Sprache; Hinweis, dass die MeRGBW-App die Verbindung blockiert; Log-Meldungen auf Englisch. Danke an [@AshBringer47](https://github.com/AshBringer47) für die erste englische Übersetzung in deren Fork.
 - **1.0.0** — Erste Version.
 
